@@ -50,10 +50,10 @@ function JobCard({ job, session }) {
         body: JSON.stringify({ id: jobId }),
       });
   
-      const data = await res.json(); // Parse JSON first
+      const data = await res.json();
   
       if (res.ok) {
-        toast.dismiss(); // dismiss old toasts
+        toast.dismiss(); 
         toast.success(data.message || "Job deleted successfully", {
           toastId: "job-delete-success"
         });

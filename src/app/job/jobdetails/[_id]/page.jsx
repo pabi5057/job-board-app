@@ -3,7 +3,7 @@ import { authOptions } from "@/auth";
 import JobData from "../../../../../data";
 import JobCard from "@/app/components/Helper/JobCard";
 import ApplyButton from "@/app/components/Helper/ApplyButton";
-import Link from "next/link";
+
 
 //fetch post
 async function getPosts() {
@@ -23,7 +23,7 @@ export default async function JobDetails({ params }) {
 
     const singleJob = postData?.posts.find((job) => job._id == jobId);
 
-    const firstFourJob=JobData.slice(0,4);
+    const firstFourJob=postData?.posts.slice(0,4);
 
     return (
         <div className="mt-20 mb-12">
@@ -66,9 +66,11 @@ export default async function JobDetails({ params }) {
                   <div className="mt-4">
                 {
                     firstFourJob.map((job)=>{
-                        return <Link href={`/job/jobdetails/${job?.id}`} className="space-y-6" key={job.id}>
-                            <JobCard job={job}/>
-                        </Link>
+                        return (
+                            <div key={job._id}>
+                              <JobCard job={job}/>
+                            </div>
+                          )
                     })
                 }
             </div>
