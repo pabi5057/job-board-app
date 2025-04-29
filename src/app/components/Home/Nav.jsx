@@ -8,7 +8,6 @@ import User from '../Helper/User';
 
 async function Nav() {
     const session = await getServerSession(authOptions);
-    console.log("session value is------", session);
     return (
         <>
             <div className="h-[13vh] overflow-hidden shadow-md">

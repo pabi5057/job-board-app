@@ -5,7 +5,7 @@ import JobCard from "@/app/components/Helper/JobCard";
 import ApplyButton from "@/app/components/Helper/ApplyButton";
 
 
-//fetch post
+
 async function getPosts() {
     const res = await fetch('http://localhost:3000/api/posts', {
       cache: 'no-store',

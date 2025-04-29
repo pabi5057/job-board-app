@@ -3,7 +3,7 @@ import Post from "@/models/Post";
 import { NextResponse } from "next/server";
 import cloudinary from "@/lib/cloudinary";
 
-// Helper: Upload file to Cloudinary using buffer
+
 const uploadToCloudinary = async (file) => {
   const arrayBuffer = await file.arrayBuffer();
   const buffer = Buffer.from(arrayBuffer);
@@ -16,12 +16,12 @@ const uploadToCloudinary = async (file) => {
   });
 };
 
-// Main POST handler
+
 export async function POST(req) {
   try {
     await connectToDatabase();
 
-    const formData = await req.formData(); // <-- Works for file upload
+    const formData = await req.formData(); 
 
     const title = formData.get("title");
     const salary = formData.get("salary");
@@ -53,7 +53,7 @@ export async function POST(req) {
   }
 }
 
-//GET METHOD
+
 export async function GET(){
     try {
         await connectToDatabase();
@@ -72,9 +72,7 @@ export async function GET(){
 export async function DELETE(req){
   try {
     const body=req.json();
-    console.log("body~~~",body);
     const {id}=await body;
-  console.log("delete id~~~",id);
     if (!id) {
       return NextResponse.json({ error: 'Post ID is required' }, { status: 400 });
     }

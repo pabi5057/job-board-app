@@ -4,7 +4,7 @@ import Post from '@/models/Post';
 import cloudinary from '@/lib/cloudinary';
 
 export async function PUT(req, { params }) {
-    // Helper: Upload file to Cloudinary using buffer
+    
     const uploadToCloudinary = async (file) => {
       const arrayBuffer = await file.arrayBuffer();
       const buffer = Buffer.from(arrayBuffer);
@@ -40,9 +40,9 @@ export async function PUT(req, { params }) {
 
     if (image && typeof image === "object" && image.size > 0) {
 
-      // Optional: handle image upload here
+      
         const imageUrl = await uploadToCloudinary(image);
-      post.image = imageUrl; // placeholder; you can use Cloudinary etc.
+      post.image = imageUrl; 
     }
 
     await post.save();

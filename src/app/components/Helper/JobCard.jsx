@@ -69,11 +69,6 @@ function JobCard({ job, session }) {
     }
   };
 
-  //const handle editnit
-  const handleEdit=()=>{
-     
-  }
-
   const handleIsClick=()=>{
     setIsOpen(true);
     setOpen(false);
@@ -105,13 +100,13 @@ function JobCard({ job, session }) {
               </div>
             </div>
             <div className="flex items-center space-x-2 sm:space-x-4 mt-[1rem]">
-              <div className="text-[10px] sm:text-[14px] text-black/80 px-3 sm:px-6 py-1 rounded-full bg-opacity-30 font-semibold capitalize bg-green-400">
+              <div className="text-[10px] sm:text-[14px] text-white/80 px-3 sm:px-6 py-1 rounded-full bg-opacity-30 font-semibold capitalize bg-green-700/60 hover:bg-green-700">
                 {job?.jobtype}
               </div>
-              <div className="text-[10px] sm:text-[14px] text-black/80 px-3 sm:px-6 py-1 rounded-full bg-opacity-30 font-semibold capitalize bg-red-400">
+              <div className="text-[10px] sm:text-[14px] text-white/80 px-3 sm:px-6 py-1 rounded-full bg-opacity-30 font-semibold capitalize bg-red-500/60 hover:bg-red-500">
                 Private
               </div>
-              <div className="text-[10px] sm:text-[14px] text-black/80 px-3 sm:px-6 py-1 rounded-full bg-opacity-30 font-semibold capitalize bg-blue-400">
+              <div className="text-[10px] sm:text-[14px] text-white/80 px-3 sm:px-6 py-1 rounded-full bg-opacity-30 font-semibold capitalize bg-blue-500/40 hover:bg-blue-500">
                 Urgent
               </div>
             </div>

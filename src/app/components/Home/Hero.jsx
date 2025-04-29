@@ -13,7 +13,6 @@ function Hero() {
 
     const [jobs, setJobs] = useState([]);
     
-    console.log("jobs----->",filteredJobs);
       useEffect(() => {
         const fetchJobs = async () => {
           const res = await fetch("/api/posts");
@@ -42,7 +41,7 @@ function Hero() {
         const results = jobs.filter((job) =>
             job.title.toLowerCase().includes(text.toLowerCase())
         );
-        console.log("results----->",results);
+      
         setFilteredJobs(results);
     };
 
@@ -59,18 +58,18 @@ function Hero() {
             <div className="pt-[5rem] pb-[3rem]">
                 <div className="w-[100%] h-[60vh] flex flex-col items-center justify-center">
                     <div className="w-[80%] mx-auto grid grid-cols-1 lg:grid-cols-2 items-center gap-[2rem]">
-                        {/* content */}
+                        
                         <div>
                             <h1 className='text-[28px] sm:text-[35px] lg:text-[45px] xl:text-[60px] text-[#05264e]
                              leading-[3rem] lg:leading-[4rem] font-extrabold'>The <span className='text-blue-500'>Easiest Way</span><br /> To Get Your New job{" "}</h1>
                             <p className='text-[#4f5e64] text-[16px] md:text-[18px] mt-[1rem]'>Each month, more than 3 million job seekers turn to website on their search
                                 for work , making over 140,000 applications every single day </p>
-                            {/* search bar */}
+                            
                             <div className='mt-[1.5rem]'>
                                 <input type="text" name='searchTerm' value={searchTerm} onChange={onHandleChange} placeholder='Search job.' className='w-[60%] md:w-[70%] lg:w-[75%] px-5 py-4 outline-none rounded-l-md bg-gray-200' />
                                 <button className='px-5 py-4 outline-none rounded-r-md bg-blue-500 text-white'>Search</button>
                             </div>
-                            {/* Search Results */}
+                            
                             {searchTerm && (
                                 <div className="bg-white mt-4 p-4 rounded-md shadow-md w-[60%] md:w-[65%] lg:w-[75%]">
                                     {filteredJobs.length > 0 ? (
@@ -88,7 +87,7 @@ function Hero() {
                                 </div>
                             )}
                         </div>
-                        {/* image */}
+                        
                         <div className='hidden lg:block'>
                             <Image src={HeroImg} alt='hero' width={700} height={400} />
                         </div>

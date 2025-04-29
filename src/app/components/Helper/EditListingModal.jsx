@@ -69,9 +69,6 @@ export default function EditListingModal({ isOpen, onClose, job, onUpdate }) {
                 toast.success("Updated Successfully!");
                 onClose();
                 router.refresh();
-                // setTimeout(() => {
-                //     router.push("/");
-                //   }, 1000)
             } else {
                 toast.error("Update failed!");
             }

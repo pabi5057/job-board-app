@@ -107,7 +107,7 @@ export default function NewListingPage() {
                     {renderField("Location", "location", "text", "e.g. New York")}
                     {renderField("Job Type", "jobtype", "text", "e.g. Full-Time")}
 
-                    {/* File Upload with Validation */}
+                   
                     <div>
                         <label
                             htmlFor="image"
