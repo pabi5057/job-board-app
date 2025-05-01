@@ -19,12 +19,19 @@ function JobCard({ job, session }) {
 
   const [open, setOpen] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const [bookmarkedJobs, setBookmarkedJobs] = useState([]);
   const menuRef = useRef(null);
   const router=useRouter();
 
   const toggleMenu = () => {
     setOpen((prev) => !prev);
   };
+
+  useEffect(() => {
+    const stored = JSON.parse(localStorage.getItem("bookmarkedJobs")) || [];
+    setBookmarkedJobs(stored);
+}, []);
+
 
 
   useEffect(() => {
@@ -39,7 +46,7 @@ function JobCard({ job, session }) {
     };
   }, []);
 
-  //handle delete
+  
   const handleDelete = async (jobId) => {
     try {
       const res = await fetch('/api/posts', {
@@ -83,10 +90,21 @@ function JobCard({ job, session }) {
     setIsOpen(false);
   }
   
+  
+  const toggleBookmark = (jobId) => {
+    let updatedBookmarks;
+    if (bookmarkedJobs.includes(jobId)) {
+        updatedBookmarks = bookmarkedJobs.filter(id => id !== jobId);
+    } else {
+        updatedBookmarks = [...bookmarkedJobs, jobId];
+    }
+    setBookmarkedJobs(updatedBookmarks);
+    localStorage.setItem("bookmarkedJobs", JSON.stringify(updatedBookmarks));
+};
+
 
   return (
     <>
-     <ToastContainer position="top-right" autoClose={3000}/>
       <div className="p-4 mb-6 relative border-2 cursor-pointer hover:scale-110 hover:shadow-sm transition-all duration-300 border-gray-500/10 rounded-lg">
         <div className="flex items-center space-x-6">
           <div>
@@ -123,19 +141,29 @@ function JobCard({ job, session }) {
           {open && (
             <div className="absolute right-0 mt-2 w-40 bg-white border rounded-lg shadow-lg z-[100]">
               <ul className="text-sm text-gray-700">
-                <li className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 cursor-pointer">
+                <li className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 cursor-pointer rounded-lg" 
+                  onClick={() => {
+                    toggleBookmark(job._id);
+                    setOpen(false);
+                    toast.dismiss(); 
+                    toast.success(bookmarkedJobs.includes(job._id)?"Remove Bookmarked successfully":"Add Bookmarked successfully ", {
+                      toastId: "job-delete-success"
+                    });
+                  } }
+                  title={bookmarkedJobs.includes(job._id) ? "Remove Bookmark" : "Add to Bookmark"}
+                >
                   <FaRegBookmark /> Bookmark
                 </li>
                 {
                   session && (
-                    <li className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 cursor-pointer" onClick={handleIsClick}>
+                    <li className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 cursor-pointer rounded-lg" onClick={handleIsClick}>
                       <FaEdit /> Edit
                     </li>
                   )
                 }
                 {
                   session && (
-                    <li  onClick={() => handleDelete(job._id)} className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 cursor-pointer text-red-600">
+                    <li  onClick={() => handleDelete(job._id)} className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 cursor-pointer text-red-600 rounded-lg">
                       <MdDelete /> Delete
                       
                     </li>
@@ -143,7 +171,7 @@ function JobCard({ job, session }) {
                   )
                 }
                 <Link href={`/job/jobdetails/${job._id}`} key={job._id}>
-                  <li className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 cursor-pointer">
+                  <li className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 cursor-pointer rounded-lg">
                     <FaEye /> View Details
                   </li>
                 </Link>

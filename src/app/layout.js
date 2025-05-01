@@ -4,6 +4,7 @@ import Nav from "./components/Home/Nav";
 import ClientProvider from "./components/Hoc/ClientProvider";
 import Footer from "./components/Home/Footer";
 import ScrollToTop from "./components/Helper/ScrollToTop";
+import { ToastContainer } from "react-toastify";
 
 
 
@@ -26,6 +27,7 @@ export default function RootLayout({ children }) {
         className={font.className}>
           <Nav/>
         {children}
+        <ToastContainer position="top-right" autoClose={3000}/>
         <Footer/>
         <ScrollToTop/>
       </body>
