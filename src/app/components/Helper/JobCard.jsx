@@ -57,10 +57,10 @@ function JobCard({ job, session }) {
         body: JSON.stringify({ id: jobId }),
       });
   
-      const data = await res.json(); // Parse JSON first
+      const data = await res.json(); 
   
       if (res.ok) {
-        toast.dismiss(); // dismiss old toasts
+        toast.dismiss(); 
         toast.success(data.message || "Job deleted successfully", {
           toastId: "job-delete-success"
         });
@@ -76,10 +76,7 @@ function JobCard({ job, session }) {
     }
   };
 
-  //const handle editnit
-  const handleEdit=()=>{
-     
-  }
+  
 
   const handleIsClick=()=>{
     setIsOpen(true);
@@ -123,13 +120,13 @@ function JobCard({ job, session }) {
               </div>
             </div>
             <div className="flex items-center space-x-2 sm:space-x-4 mt-[1rem]">
-              <div className="text-[10px] sm:text-[14px] text-black/80 px-3 sm:px-6 py-1 rounded-full bg-opacity-30 font-semibold capitalize bg-green-400">
+              <div className="text-[10px] sm:text-[14px] text-white/80 px-3 sm:px-6 py-1 rounded-full  font-semibold capitalize  bg-green-400/60 hover:bg-green-500">
                 {job?.jobtype}
               </div>
-              <div className="text-[10px] sm:text-[14px] text-black/80 px-3 sm:px-6 py-1 rounded-full bg-opacity-30 font-semibold capitalize bg-red-400">
+              <div className="text-[10px] sm:text-[14px] text-white/80 px-3 sm:px-6 py-1 rounded-full  font-semibold capitalize bg-red-400/50 hover:bg-red-500">
                 Private
               </div>
-              <div className="text-[10px] sm:text-[14px] text-black/80 px-3 sm:px-6 py-1 rounded-full bg-opacity-30 font-semibold capitalize bg-blue-400">
+              <div className="text-[10px] sm:text-[14px] text-white/80 px-3 sm:px-6 py-1 rounded-full  font-semibold capitalize bg-blue-400/60 hover:bg-blue-600">
                 Urgent
               </div>
             </div>
