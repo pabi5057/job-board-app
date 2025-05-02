@@ -2,6 +2,9 @@ import { connectToDatabase } from "@/lib/mongodb";
 import Post from "@/models/Post";
 import { NextResponse } from "next/server";
 import cloudinary from "@/lib/cloudinary";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/auth";
+import mongoose, { Types } from "mongoose";
 
 // Helper: Upload file to Cloudinary using buffer
 const uploadToCloudinary = async (file) => {
@@ -18,10 +21,18 @@ const uploadToCloudinary = async (file) => {
 
 // Main POST handler
 export async function POST(req) {
+
   try {
     await connectToDatabase();
 
-    const formData = await req.formData(); // <-- Works for file upload
+    const session = await getServerSession(authOptions);
+    if (!session || !session.user) {
+      return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
+    }
+
+    const userId = session.user.id;
+
+    const formData = await req.formData();
 
     const title = formData.get("title");
     const salary = formData.get("salary");
@@ -41,7 +52,9 @@ export async function POST(req) {
       location,
       jobtype,
       image: imageUrl,
+      user: userId,
     });
+
 
     await newPost.save();
 
@@ -54,27 +67,25 @@ export async function POST(req) {
 }
 
 //GET METHOD
-export async function GET(){
-    try {
-        await connectToDatabase();
-        const posts=await Post.find({}).sort({_id:-1});
-        return NextResponse.json({ success: true, posts });
-        
-    } catch (error) {
-        console.log(error);
-        return NextResponse.json(
-            { success: false, error: "Failed to fetch posts" },
-            { status: 500 }
-          );
-    }
+export async function GET() {
+  try {
+    await connectToDatabase();
+    const posts = await Post.find({}).sort({ _id: -1 }).populate({ path: "user", select: "name email", strictPopulate: false });
+    return NextResponse.json({ success: true, posts });
+
+  } catch (error) {
+    console.log(error);
+    return NextResponse.json(
+      { success: false, error: "Failed to fetch posts" },
+      { status: 500 }
+    );
+  }
 }
 
-export async function DELETE(req){
+export async function DELETE(req) {
   try {
-    const body=req.json();
-    console.log("body~~~",body);
-    const {id}=await body;
-  console.log("delete id~~~",id);
+    const body = req.json();
+    const { id } = await body;
     if (!id) {
       return NextResponse.json({ error: 'Post ID is required' }, { status: 400 });
     }

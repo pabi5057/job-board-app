@@ -23,7 +23,7 @@ export default async function JobDetails({ params }) {
 
     const singleJob = postData?.posts.find((job) => job._id == jobId);
 
-    const firstFourJob=JobData.slice(0,4);
+    const firstFourJob=postData?.posts.slice(0,4);
 
     return (
         <div className="mt-20 mb-12">
@@ -66,9 +66,10 @@ export default async function JobDetails({ params }) {
                   <div className="mt-4">
                 {
                     firstFourJob.map((job)=>{
-                        return <Link href={`/job/jobdetails/${job?.id}`} className="space-y-6" key={job.id}>
-                            <JobCard job={job}/>
-                        </Link>
+                        return (  
+                            <JobCard key={job._id} job={job} session={session} />
+                          )
+                    
                     })
                 }
             </div>

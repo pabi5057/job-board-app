@@ -14,7 +14,8 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css"
 import { useRouter } from "next/navigation";
 import EditListingModal from "./EditListingModal";
-
+import "aos/dist/aos.css";
+import Aos from "aos";
 function JobCard({ job, session }) {
 
   const [open, setOpen] = useState(false);
@@ -99,10 +100,18 @@ function JobCard({ job, session }) {
     localStorage.setItem("bookmarkedJobs", JSON.stringify(updatedBookmarks));
 };
 
+  useEffect(() => {
+    Aos.init({
+      duration: 800, 
+      once: true,    
+    });
+  }, []);
+
 
   return (
     <>
-      <div className="p-4 mb-6 relative border-2 cursor-pointer hover:scale-110 hover:shadow-sm transition-all duration-300 border-gray-500/10 rounded-lg">
+     
+      <div data-aos="zoom-in-up" className="p-4 mb-6 relative border-2 cursor-pointer hover:scale-110 hover:shadow-sm transition-all duration-300 border-gray-500/10 rounded-lg">
         <div className="flex items-center space-x-6">
           <div>
             <Image src={job?.image} alt={job?.title} width={50} height={50} />
@@ -141,8 +150,7 @@ function JobCard({ job, session }) {
                 <li className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 cursor-pointer rounded-lg" 
                   onClick={() => {
                     toggleBookmark(job._id);
-                    setOpen(false);
-                    toast.dismiss(); 
+                    setOpen(false); 
                     toast.success(bookmarkedJobs.includes(job._id)?"Remove Bookmarked successfully":"Add Bookmarked successfully ", {
                       toastId: "job-delete-success"
                     });
@@ -152,14 +160,14 @@ function JobCard({ job, session }) {
                   <FaRegBookmark /> Bookmark
                 </li>
                 {
-                  session && (
+                  session?.user?.id ==job?.user?._id && (
                     <li className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 cursor-pointer rounded-lg" onClick={handleIsClick}>
                       <FaEdit /> Edit
                     </li>
                   )
                 }
                 {
-                  session && (
+                  session?.user?.id ==job?.user?._id && (
                     <li  onClick={() => handleDelete(job._id)} className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 cursor-pointer text-red-600 rounded-lg">
                       <MdDelete /> Delete
                       

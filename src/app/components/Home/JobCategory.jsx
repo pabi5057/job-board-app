@@ -9,8 +9,11 @@ import icon6 from '/public/images/icon6.png'
 import icon7 from '/public/images/icon7.png'
 import icon8 from '/public/images/icon8.png'
 import icon9 from '/public/images/icon9.png'
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 function JobCategory() {
+    
     return (
         <>
             <div className="pt-20 pb-12">

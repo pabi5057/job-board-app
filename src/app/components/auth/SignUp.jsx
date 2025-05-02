@@ -1,20 +1,3 @@
-// import ImageUrl from '@/images/chair.jpg'
-// import Image from "next/image";
-
-
-// function SignUp() {
-//     return (
-//         <>
-//             <div className="overflow-hidden flex flex-col h-[84vh] items-center justify-center">
-//                  {/* image */}
-//                  <Image src={ImageUrl} alt="image" width={400} height={200} />
-//                  <button className='px-12 py-3 mt-[2rem] bg-purple-700 hover:bg-purple-900 transition-all duration-300 rounded-lg text-white'>Sign Up Now</button>
-//             </div>
-//         </>
-//     );
-// }
-
-// export default SignUp;
 
 "use client";
 import { useState } from "react";
@@ -44,26 +27,26 @@ export default function SignUp() {
 
   return (
     <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded shadow">
-      <h1 className="text-2xl font-bold mb-4">Register</h1>
+      <h1 className="text-2xl font-bold mb-4 text-center">Sign Up</h1>
       <form onSubmit={handleSubmit}>
         <input
           type="text"
           placeholder="Name"
-          className="w-full p-2 mb-4 border"
+          className="w-full p-2 mb-4 border rounded-lg"
           value={form.name}
           onChange={(e) => setForm({ ...form, name: e.target.value })}
         />
         <input
           type="email"
           placeholder="Email"
-          className="w-full p-2 mb-4 border"
+          className="w-full p-2 mb-4 border rounded-lg"
           value={form.email}
           onChange={(e) => setForm({ ...form, email: e.target.value })}
         />
         <input
           type="password"
           placeholder="Password"
-          className="w-full p-2 mb-4 border"
+          className="w-full p-2 mb-4 border rounded-lg"
           value={form.password}
           onChange={(e) => setForm({ ...form, password: e.target.value })}
         />
