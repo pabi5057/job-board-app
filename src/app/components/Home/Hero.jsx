@@ -5,6 +5,8 @@ import { useCallback, useEffect, useState } from 'react';
 import HeroImg from '/public/images/hero.svg'
 import Image from 'next/image';
 import Link from 'next/link';
+import Typed from "react-typed";
+
 
 function Hero() {
     const [searchTerm, setSearchTerm] = useState("");

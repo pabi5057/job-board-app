@@ -31,7 +31,7 @@ export default async function JobDetails({ params }) {
                 <div className="flex-[0.7]">
                     <JobCard job={singleJob} session={session}/>
                 </div>
-                {session && <ApplyButton />}
+                {session && <ApplyButton job={singleJob}/>}
                 {!session && (
                     <button className="px-8 py-3 bg-emerald-600 rounded-lg text-white">Signu Up To apply</button>
                 )}
