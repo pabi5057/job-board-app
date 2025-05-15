@@ -72,9 +72,7 @@ export async function GET(){
 export async function DELETE(req){
   try {
     const body=req.json();
-    console.log("body~~~",body);
     const {id}=await body;
-  console.log("delete id~~~",id);
     if (!id) {
       return NextResponse.json({ error: 'Post ID is required' }, { status: 400 });
     }

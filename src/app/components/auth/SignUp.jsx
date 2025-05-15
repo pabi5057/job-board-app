@@ -1,20 +1,3 @@
-// import ImageUrl from '@/images/chair.jpg'
-// import Image from "next/image";
-
-
-// function SignUp() {
-//     return (
-//         <>
-//             <div className="overflow-hidden flex flex-col h-[84vh] items-center justify-center">
-//                  {/* image */}
-//                  <Image src={ImageUrl} alt="image" width={400} height={200} />
-//                  <button className='px-12 py-3 mt-[2rem] bg-purple-700 hover:bg-purple-900 transition-all duration-300 rounded-lg text-white'>Sign Up Now</button>
-//             </div>
-//         </>
-//     );
-// }
-
-// export default SignUp;
 
 "use client";
 import { useState } from "react";
@@ -33,7 +16,8 @@ export default function SignUp() {
       body: JSON.stringify(form),
       headers: { "Content-Type": "application/json" },
     });
-
+    const data = await res.json();
+    console.log('Registered:', data);
     if (res.ok) {
       router.push("/login");
     } else {
@@ -71,9 +55,9 @@ export default function SignUp() {
           Register
         </button>
       </form>
-        <p>All ready have an account ?<span className="text-red-500"><Link href="/login">Login </Link></span></p>
-      
-     
+      <p>All ready have an account ?<span className="text-red-500"><Link href="/login">Login </Link></span></p>
+
+
     </div>
   );
 }
