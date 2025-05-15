@@ -7,7 +7,8 @@ import Link from "next/link";
 
 //fetch post
 async function getPosts() {
-    const res = await fetch('/api/posts', {
+     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+    const res = await fetch(`${baseUrl}/api/posts`, {
       cache: 'no-store',
     });
   
