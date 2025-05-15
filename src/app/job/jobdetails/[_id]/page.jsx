@@ -33,7 +33,7 @@ export default async function JobDetails({ params }) {
                 </div>
                 {session && <ApplyButton job={singleJob}/>}
                 {!session && (
-                    <button className="px-8 py-3 bg-emerald-600 rounded-lg text-white">Signu Up To apply</button>
+                    <Link href="/signup" className="px-8 py-3 bg-emerald-600 rounded-lg text-white">Signu Up To apply</Link>
                 )}
             </div>
             <div className="mt-16 w-[80%] mx-auto">
