@@ -5,7 +5,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 export default function NewListingPage() {
-    const router=useRouter();
+    const router = useRouter();
     const [form, setForm] = useState({
         title: "",
         image: null,
@@ -15,7 +15,7 @@ export default function NewListingPage() {
     });
 
     const [touched, setTouched] = useState({});
-    
+
 
     const handleChange = (e) => {
         const { name, value, files } = e.target;
@@ -47,11 +47,11 @@ export default function NewListingPage() {
         });
 
         if (res.ok) {
-            
-            toast.success("Create Successfully!");     
+
+            toast.success("Create Successfully!");
             setTimeout(() => {
                 router.push("/");
-              }, 1000)
+            }, 1000)
 
         } else {
             toast.error("Something went wrong!");
@@ -83,8 +83,8 @@ export default function NewListingPage() {
                 onChange={handleChange}
                 placeholder={placeholder}
                 className={`w-full mt-1 p-2.5 text-sm rounded-lg border ${isValid(name)
-                        ? "bg-green-50 border-green-500 text-green-900 placeholder-green-700 focus:ring-green-500 focus:border-green-500"
-                        : "bg-gray-50 border-gray-300 text-gray-900 placeholder-gray-400 focus:ring-blue-500 focus:border-blue-500"
+                    ? "bg-green-50 border-green-500 text-green-900 placeholder-green-700 focus:ring-green-500 focus:border-green-500"
+                    : "bg-gray-50 border-gray-300 text-gray-900 placeholder-gray-400 focus:ring-blue-500 focus:border-blue-500"
                     }`}
             />
             {touched[name] && isValid(name) && (
@@ -98,9 +98,12 @@ export default function NewListingPage() {
     return (
         <>
             <ToastContainer position="top-right" />
-            <div className="px-4 py-10 max-w-xl mx-auto">
-                <h1 className="text-2xl font-bold mb-6 text-center">Create New Job</h1>
-
+            <h1 className=" text-5xl font-bold mb-4 mt-10 text-center">Find Your Perfect Developer</h1>
+            <p className='text-lg text-bold text-black/60 mb-6 mt-2 text-center'>Get your job posting seen by thousands of job seekers.</p>
+            <div className="px-4 py-10 mb-4 max-w-xl mx-auto border-1 border-gray-300 rounded-lg 
+                  shadow-2xs bg-white dark:bg-gray-800">
+                    <p className='text-lg font-bold mt-1'>Job details</p>
+                    <p className='text-md  text-black/60 mb-6 mt-1'>Provide a job description and details</p>
                 <form onSubmit={handleSubmit} className="grid gap-5">
                     {renderField("Title", "title", "text", "e.g. Product Designer")}
                     {renderField("Salary", "salary", "text", "e.g. 50k or 50,000/month")}
@@ -123,8 +126,8 @@ export default function NewListingPage() {
                             accept="image/*"
                             onChange={handleChange}
                             className={`block w-full mt-1 text-sm rounded-lg border ${isValid("image")
-                                    ? "bg-green-50 border-green-500 text-green-900 file:text-green-700 focus:outline-green-500"
-                                    : "bg-gray-50 border-gray-300 text-gray-900 file:text-gray-500"
+                                ? "bg-green-50 border-green-500 text-green-900 file:text-green-700 focus:outline-green-500"
+                                : "bg-gray-50 border-gray-300 text-gray-900 file:text-gray-500"
                                 } cursor-pointer`}
                         />
                         <div className="mt-1 text-sm text-gray-500 dark:text-gray-300">

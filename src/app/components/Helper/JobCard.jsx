@@ -14,17 +14,25 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css"
 import { useRouter } from "next/navigation";
 import EditListingModal from "./EditListingModal";
-
+import "aos/dist/aos.css";
+import Aos from "aos";
 function JobCard({ job, session }) {
 
   const [open, setOpen] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const [bookmarkedJobs, setBookmarkedJobs] = useState([]);
   const menuRef = useRef(null);
   const router=useRouter();
 
   const toggleMenu = () => {
     setOpen((prev) => !prev);
   };
+
+  useEffect(() => {
+    const stored = JSON.parse(localStorage.getItem("bookmarkedJobs")) || [];
+    setBookmarkedJobs(stored);
+}, []);
+
 
 
   useEffect(() => {
@@ -39,7 +47,7 @@ function JobCard({ job, session }) {
     };
   }, []);
 
-  //handle delete
+  
   const handleDelete = async (jobId) => {
     try {
       const res = await fetch('/api/posts', {
@@ -50,10 +58,10 @@ function JobCard({ job, session }) {
         body: JSON.stringify({ id: jobId }),
       });
   
-      const data = await res.json(); // Parse JSON first
+      const data = await res.json(); 
   
       if (res.ok) {
-        toast.dismiss(); // dismiss old toasts
+        toast.dismiss(); 
         toast.success(data.message || "Job deleted successfully", {
           toastId: "job-delete-success"
         });
@@ -69,10 +77,7 @@ function JobCard({ job, session }) {
     }
   };
 
-  //const handle editnit
-  const handleEdit=()=>{
-     
-  }
+  
 
   const handleIsClick=()=>{
     setIsOpen(true);
@@ -83,11 +88,30 @@ function JobCard({ job, session }) {
     setIsOpen(false);
   }
   
+  
+  const toggleBookmark = (jobId) => {
+    let updatedBookmarks;
+    if (bookmarkedJobs.includes(jobId)) {
+        updatedBookmarks = bookmarkedJobs.filter(id => id !== jobId);
+    } else {
+        updatedBookmarks = [...bookmarkedJobs, jobId];
+    }
+    setBookmarkedJobs(updatedBookmarks);
+    localStorage.setItem("bookmarkedJobs", JSON.stringify(updatedBookmarks));
+};
+
+  useEffect(() => {
+    Aos.init({
+      duration: 800, 
+      once: true,    
+    });
+  }, []);
+
 
   return (
     <>
-     <ToastContainer position="top-right" autoClose={3000}/>
-      <div className="p-4 mb-6 relative border-2 cursor-pointer hover:scale-110 hover:shadow-sm transition-all duration-300 border-gray-500/10 rounded-lg">
+     
+      <div data-aos="zoom-in-up" className="p-4 mb-6 relative border-2 cursor-pointer hover:scale-110 hover:shadow-sm transition-all duration-300 border-gray-500/10 rounded-lg">
         <div className="flex items-center space-x-6">
           <div>
             <Image src={job?.image} alt={job?.title} width={50} height={50} />
@@ -105,13 +129,13 @@ function JobCard({ job, session }) {
               </div>
             </div>
             <div className="flex items-center space-x-2 sm:space-x-4 mt-[1rem]">
-              <div className="text-[10px] sm:text-[14px] text-black/80 px-3 sm:px-6 py-1 rounded-full bg-opacity-30 font-semibold capitalize bg-green-400">
+              <div className="text-[10px] sm:text-[14px] text-white/80 px-3 sm:px-6 py-1 rounded-full  font-semibold capitalize  bg-green-400/60 hover:bg-green-500">
                 {job?.jobtype}
               </div>
-              <div className="text-[10px] sm:text-[14px] text-black/80 px-3 sm:px-6 py-1 rounded-full bg-opacity-30 font-semibold capitalize bg-red-400">
+              <div className="text-[10px] sm:text-[14px] text-white/80 px-3 sm:px-6 py-1 rounded-full  font-semibold capitalize bg-red-400/50 hover:bg-red-500">
                 Private
               </div>
-              <div className="text-[10px] sm:text-[14px] text-black/80 px-3 sm:px-6 py-1 rounded-full bg-opacity-30 font-semibold capitalize bg-blue-400">
+              <div className="text-[10px] sm:text-[14px] text-white/80 px-3 sm:px-6 py-1 rounded-full  font-semibold capitalize bg-blue-400/60 hover:bg-blue-600">
                 Urgent
               </div>
             </div>
@@ -123,19 +147,28 @@ function JobCard({ job, session }) {
           {open && (
             <div className="absolute right-0 mt-2 w-40 bg-white border rounded-lg shadow-lg z-[100]">
               <ul className="text-sm text-gray-700">
-                <li className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 cursor-pointer">
+                <li className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 cursor-pointer rounded-lg" 
+                  onClick={() => {
+                    toggleBookmark(job._id);
+                    setOpen(false); 
+                    toast.success(bookmarkedJobs.includes(job._id)?"Remove Bookmarked successfully":"Add Bookmarked successfully ", {
+                      toastId: "job-delete-success"
+                    });
+                  } }
+                  title={bookmarkedJobs.includes(job._id) ? "Remove Bookmark" : "Add to Bookmark"}
+                >
                   <FaRegBookmark /> Bookmark
                 </li>
                 {
-                  session && (
-                    <li className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 cursor-pointer" onClick={handleIsClick}>
+                  session?.user?.id ==job?.user?._id && (
+                    <li className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 cursor-pointer rounded-lg" onClick={handleIsClick}>
                       <FaEdit /> Edit
                     </li>
                   )
                 }
                 {
-                  session && (
-                    <li  onClick={() => handleDelete(job._id)} className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 cursor-pointer text-red-600">
+                  session?.user?.id ==job?.user?._id && (
+                    <li  onClick={() => handleDelete(job._id)} className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 cursor-pointer text-red-600 rounded-lg">
                       <MdDelete /> Delete
                       
                     </li>
@@ -143,7 +176,7 @@ function JobCard({ job, session }) {
                   )
                 }
                 <Link href={`/job/jobdetails/${job._id}`} key={job._id}>
-                  <li className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 cursor-pointer">
+                  <li className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 cursor-pointer rounded-lg">
                     <FaEye /> View Details
                   </li>
                 </Link>

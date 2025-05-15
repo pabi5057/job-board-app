@@ -8,13 +8,12 @@ import User from '../Helper/User';
 
 async function Nav() {
     const session = await getServerSession(authOptions);
-    console.log("session value is------", session);
     return (
         <>
             <div className="h-[13vh] overflow-hidden shadow-md">
-                <div className="w-[90%]  md:w-[80%] h-[100%] mx-auto flex items-center justify-between ">
+                <div className="w-[90%]  md:w-[80%] h-[100%] mx-auto  flex items-center justify-between ">
                     {/* logo */}
-                    <div className="w-[150px] h-[150px] md:w-[250px] md:h-[250px]">
+                    <div className="w-[150px] h-[150px] md:w-[250px] md:h-[250px] md:mr-0">
                         <Link href="/">
                             <Image src={logoImage} alt="logo" width={250} height={250} className="w-[100%] h-[100%]" />
                         </Link>
