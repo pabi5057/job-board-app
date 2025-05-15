@@ -7,7 +7,7 @@ function User({ session }) {
     return (
         <>
             <div onClick={() => {
-                signOut({ callbackUrl: "http://localhost:3000/signup" })
+                signOut({ callbackUrl: "/" })
             }} className="cursor-pointer">
                 {
                     session?.user?.image
