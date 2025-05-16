@@ -26,8 +26,8 @@ export default function RootLayout({ children }) {
       <body
         className={font.className}>
           <Nav/>
-        {children}
         <ToastContainer position="top-right" autoClose={3000}/>
+        {children}
         <Footer/>
         <ScrollToTop/>
       </body>

@@ -20,7 +20,7 @@ export const authOptions = {
         const isValid = await bcrypt.compare(credentials.password, user.password);
         if (!isValid) throw new Error("Invalid password");
 
-        return { id: user._id, name: user.name, email: user.email };
+        return { id: user._id, name: user.name, email: user.email,role:user.role };
       },
     }),
   ],
@@ -29,11 +29,17 @@ export const authOptions = {
   },
   callbacks: {
     async jwt({ token, user }) {
-      if (user) token.id = user.id;
+      if (user) {
+      token.id = user.id;
+      token.role = user.role; 
+    }
       return token;
     },
     async session({ session, token }) {
-      if (token) session.user.id = token.id;
+       if (token) {
+      session.user.id = token.id;
+      session.user.role = token.role;
+    }
       return session;
     },
   },

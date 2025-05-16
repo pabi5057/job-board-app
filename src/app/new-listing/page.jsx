@@ -1,3 +1,158 @@
+// "use client";
+// import { useRouter } from 'next/navigation';
+// import { useState } from "react";
+// import { ToastContainer, toast } from "react-toastify";
+// import "react-toastify/dist/ReactToastify.css";
+
+// export default function NewListingPage() {
+//     const router = useRouter();
+//     const [form, setForm] = useState({
+//         title: "",
+//         image: null,
+//         salary: "",
+//         location: "",
+//         jobtype: "",
+//     });
+
+//     const [touched, setTouched] = useState({});
+
+
+//     const handleChange = (e) => {
+//         const { name, value, files } = e.target;
+//         if (name === "image") {
+//             setForm((prev) => ({ ...prev, image: files[0] }));
+//         } else {
+//             setForm((prev) => ({ ...prev, [name]: value }));
+//         }
+//         setTouched((prev) => ({ ...prev, [name]: true }));
+//     };
+
+//     const isValid = (name) => {
+//         if (name === "image") return !!form.image;
+//         if (name === "salary") return form.salary.trim().length > 0;
+//         return form[name]?.trim().length > 0;
+//     };
+
+//     const handleSubmit = async (e) => {
+//         e.preventDefault();
+
+//         const formData = new FormData();
+//         for (const key in form) {
+//             formData.append(key, form[key]);
+//         }
+
+//         const res = await fetch("/api/posts", {
+//             method: "POST",
+//             body: formData,
+//         });
+
+//         if (res.ok) {
+
+//             toast.success("Create Successfully!");
+//             setTimeout(() => {
+//                 router.push("/");
+//             }, 1000)
+
+//         } else {
+//             toast.error("Something went wrong!");
+//         }
+
+//         setForm({
+//             title: "",
+//             image: null,
+//             salary: "",
+//             location: "",
+//             jobtype: "",
+//         });
+//     };
+
+//     const renderField = (label, name, type = "text", placeholder = "") => (
+//         <div>
+//             <label
+//                 htmlFor={name}
+//                 className={`block text-sm font-medium ${isValid(name) ? "text-green-700 dark:text-green-500" : "text-gray-900 dark:text-white"
+//                     }`}
+//             >
+//                 {label}
+//             </label>
+//             <input
+//                 type={type}
+//                 name={name}
+//                 id={name}
+//                 value={type !== "file" ? form[name] : undefined}
+//                 onChange={handleChange}
+//                 placeholder={placeholder}
+//                 className={`w-full mt-1 p-2.5 text-sm rounded-lg border ${isValid(name)
+//                     ? "bg-green-50 border-green-500 text-green-900 placeholder-green-700 focus:ring-green-500 focus:border-green-500"
+//                     : "bg-gray-50 border-gray-300 text-gray-900 placeholder-gray-400 focus:ring-blue-500 focus:border-blue-500"
+//                     }`}
+//             />
+//             {touched[name] && isValid(name) && (
+//                 <p className="mt-1 text-sm text-green-600 dark:text-green-500">
+//                     ✅ <span className="font-medium">Alright!</span> Looks good!
+//                 </p>
+//             )}
+//         </div>
+//     );
+
+//     return (
+//         <>
+//             <ToastContainer position="top-right" />
+//             <h1 className=" text-5xl font-bold mb-4 mt-10 text-center">Find Your Perfect Developer</h1>
+//             <p className='text-lg text-bold text-black/60 mb-6 mt-2 text-center'>Get your job posting seen by thousands of job seekers.</p>
+//             <div className="px-4 py-10 mb-4 max-w-xl mx-auto border-1 border-gray-300 rounded-lg 
+//                   shadow-2xs bg-white dark:bg-gray-800">
+//                     <p className='text-lg font-bold mt-1'>Job details</p>
+//                     <p className='text-md  text-black/60 mb-6 mt-1'>Provide a job description and details</p>
+//                 <form onSubmit={handleSubmit} className="grid gap-5">
+//                     {renderField("Title", "title", "text", "e.g. Product Designer")}
+//                     {renderField("Salary", "salary", "text", "e.g. 50k or 50,000/month")}
+//                     {renderField("Location", "location", "text", "e.g. New York")}
+//                     {renderField("Job Type", "jobtype", "text", "e.g. Full-Time")}
+
+//                     {/* File Upload with Validation */}
+//                     <div>
+//                         <label
+//                             htmlFor="image"
+//                             className={`block text-sm font-medium ${isValid("image") ? "text-green-700 dark:text-green-500" : "text-gray-900 dark:text-white"
+//                                 }`}
+//                         >
+//                             Upload File
+//                         </label>
+//                         <input
+//                             type="file"
+//                             name="image"
+//                             id="image"
+//                             accept="image/*"
+//                             onChange={handleChange}
+//                             className={`block w-full mt-1 text-sm rounded-lg border ${isValid("image")
+//                                 ? "bg-green-50 border-green-500 text-green-900 file:text-green-700 focus:outline-green-500"
+//                                 : "bg-gray-50 border-gray-300 text-gray-900 file:text-gray-500"
+//                                 } cursor-pointer`}
+//                         />
+//                         <div className="mt-1 text-sm text-gray-500 dark:text-gray-300">
+//                             A profile picture is useful to confirm you're logged in
+//                         </div>
+//                         {touched.image && isValid("image") && (
+//                             <p className="mt-1 text-sm text-green-600 dark:text-green-500">
+//                                 ✅ <span className="font-medium">Alright!</span> File selected!
+//                             </p>
+//                         )}
+//                     </div>
+
+//                     <button
+//                         type="submit"
+//                         className="w-full bg-blue-600 text-white font-medium py-2.5 rounded-lg hover:bg-blue-700 transition"
+//                     >
+//                         Create Post
+//                     </button>
+//                 </form>
+//             </div>
+//         </>
+//     );
+// }
+
+
 "use client";
 import { useRouter } from 'next/navigation';
 import { useState } from "react";
@@ -6,29 +161,43 @@ import "react-toastify/dist/ReactToastify.css";
 
 export default function NewListingPage() {
     const router = useRouter();
+
     const [form, setForm] = useState({
         title: "",
         image: null,
         salary: "",
         location: "",
         jobtype: "",
+        description: "",
+        skills: [],
     });
 
     const [touched, setTouched] = useState({});
 
-
     const handleChange = (e) => {
-        const { name, value, files } = e.target;
+        const { name, value, files, type, checked } = e.target;
+
         if (name === "image") {
             setForm((prev) => ({ ...prev, image: files[0] }));
+        } else if (name === "skills") {
+            if (checked) {
+                setForm((prev) => ({ ...prev, skills: [...prev.skills, value] }));
+            } else {
+                setForm((prev) => ({
+                    ...prev,
+                    skills: prev.skills.filter((skill) => skill !== value),
+                }));
+            }
         } else {
             setForm((prev) => ({ ...prev, [name]: value }));
         }
+
         setTouched((prev) => ({ ...prev, [name]: true }));
     };
 
     const isValid = (name) => {
         if (name === "image") return !!form.image;
+        if (name === "skills") return form.skills.length > 0;
         if (name === "salary") return form.salary.trim().length > 0;
         return form[name]?.trim().length > 0;
     };
@@ -38,7 +207,11 @@ export default function NewListingPage() {
 
         const formData = new FormData();
         for (const key in form) {
-            formData.append(key, form[key]);
+            if (key === "skills") {
+                form.skills.forEach((skill) => formData.append("skills", skill));
+            } else {
+                formData.append(key, form[key]);
+            }
         }
 
         const res = await fetch("/api/posts", {
@@ -47,12 +220,10 @@ export default function NewListingPage() {
         });
 
         if (res.ok) {
-
-            toast.success("Create Successfully!");
+            toast.success("Created Successfully!");
             setTimeout(() => {
                 router.push("/");
-            }, 1000)
-
+            }, 1000);
         } else {
             toast.error("Something went wrong!");
         }
@@ -63,15 +234,17 @@ export default function NewListingPage() {
             salary: "",
             location: "",
             jobtype: "",
+            description: "",
+            skills: [],
         });
+        setTouched({});
     };
 
     const renderField = (label, name, type = "text", placeholder = "") => (
         <div>
             <label
                 htmlFor={name}
-                className={`block text-sm font-medium ${isValid(name) ? "text-green-700 dark:text-green-500" : "text-gray-900 dark:text-white"
-                    }`}
+                className={`block text-sm font-medium ${isValid(name) ? "text-green-700 dark:text-green-500" : "text-gray-900 dark:text-white"}`}
             >
                 {label}
             </label>
@@ -98,25 +271,71 @@ export default function NewListingPage() {
     return (
         <>
             <ToastContainer position="top-right" />
-            <h1 className=" text-5xl font-bold mb-4 mt-10 text-center">Find Your Perfect Developer</h1>
-            <p className='text-lg text-bold text-black/60 mb-6 mt-2 text-center'>Get your job posting seen by thousands of job seekers.</p>
-            <div className="px-4 py-10 mb-4 max-w-xl mx-auto border-1 border-gray-300 rounded-lg 
-                  shadow-2xs bg-white dark:bg-gray-800">
-                    <p className='text-lg font-bold mt-1'>Job details</p>
-                    <p className='text-md  text-black/60 mb-6 mt-1'>Provide a job description and details</p>
+            <h1 className="text-5xl font-bold mb-4 mt-10 text-center">Find Your Perfect Developer</h1>
+            <p className='text-lg font-bold text-black/60 mb-6 mt-2 text-center'>
+                Get your job posting seen by thousands of job seekers.
+            </p>
+            <div className="px-4 py-10 mb-4 max-w-xl mx-auto border-1 border-gray-300 rounded-lg shadow-2xs bg-white dark:bg-gray-800">
+                <p className='text-lg font-bold mt-1'>Job details</p>
+                <p className='text-md text-black/60 mb-6 mt-1'>Provide a job description and details</p>
+
                 <form onSubmit={handleSubmit} className="grid gap-5">
                     {renderField("Title", "title", "text", "e.g. Product Designer")}
                     {renderField("Salary", "salary", "text", "e.g. 50k or 50,000/month")}
                     {renderField("Location", "location", "text", "e.g. New York")}
                     {renderField("Job Type", "jobtype", "text", "e.g. Full-Time")}
 
-                    {/* File Upload with Validation */}
+                    {/* Job Description */}
                     <div>
-                        <label
-                            htmlFor="image"
-                            className={`block text-sm font-medium ${isValid("image") ? "text-green-700 dark:text-green-500" : "text-gray-900 dark:text-white"
-                                }`}
-                        >
+                        <label htmlFor="description" className="block text-sm font-medium text-gray-900 dark:text-white">
+                            Job Description
+                        </label>
+                        <textarea
+                            name="description"
+                            id="description"
+                            rows="4"
+                            value={form.description}
+                            onChange={handleChange}
+                            placeholder="Write about the job role and responsibilities..."
+                            className="w-full mt-1 p-2.5 text-sm rounded-lg border bg-gray-50 border-gray-300 text-gray-900 placeholder-gray-400 focus:ring-blue-500 focus:border-blue-500"
+                        />
+                        {touched.description && isValid("description") && (
+                            <p className="mt-1 text-sm text-green-600 dark:text-green-500">
+                                ✅ <span className="font-medium">Alright!</span> Looks good!
+                            </p>
+                        )}
+                    </div>
+
+                    {/* Skills Checkbox Group */}
+                    <div>
+                        <label className="block text-sm font-medium text-gray-900 dark:text-white mb-1">
+                            Required Skills
+                        </label>
+                        <div className="flex flex-wrap gap-4">
+                            {["JavaScript", "React", "Node.js", "Python", "CSS"].map((skill) => (
+                                <label key={skill} className="flex items-center space-x-2">
+                                    <input
+                                        type="checkbox"
+                                        name="skills"
+                                        value={skill}
+                                        checked={form.skills.includes(skill)}
+                                        onChange={handleChange}
+                                        className="accent-blue-600"
+                                    />
+                                    <span>{skill}</span>
+                                </label>
+                            ))}
+                        </div>
+                        {touched.skills && isValid("skills") && (
+                            <p className="mt-1 text-sm text-green-600 dark:text-green-500">
+                                ✅ <span className="font-medium">Alright!</span> Skills selected!
+                            </p>
+                        )}
+                    </div>
+
+                    {/* File Upload */}
+                    <div>
+                        <label htmlFor="image" className={`block text-sm font-medium ${isValid("image") ? "text-green-700 dark:text-green-500" : "text-gray-900 dark:text-white"}`}>
                             Upload File
                         </label>
                         <input

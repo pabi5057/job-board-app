@@ -3,7 +3,7 @@ import User from "@/models/User";
 import bcrypt from "bcryptjs";
 
 export async function POST(req) {
-    const { name, email, password } = await req.json();
+    const { name, email, password,role,companyName,registrationNumber,zipcode,state,country } = await req.json();;
     await connectToDatabase();
   
     const existingUser = await User.findOne({ email });
@@ -12,7 +12,7 @@ export async function POST(req) {
     }
   
     const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = await User.create({ name, email, password: hashedPassword });
-  
-    return new Response(JSON.stringify({ message: "User registered", user: newUser }), { status: 201 });
+    const newUser = await User.create({ name, email, password: hashedPassword,role,companyName,registrationNumber,zipcode,state,country});
+     const plainUser = newUser.toObject();
+    return new Response(JSON.stringify({ message: "User registered", user: plainUser }), { status: 201 });
   }

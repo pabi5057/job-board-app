@@ -14,7 +14,7 @@ function Footer() {
                     <div>
                         <h1 className="text-[24px] text-white mb-[1rem] font-bold uppercase">Jobify</h1>
                         <p className="text-[14px] text-white/70 ">
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. nihil cuque blanditiis incidunt quam molestiae
+                            Explore exciting career opportunities and connect with employers looking for skilled and passionate individuals.
                         </p>
                         {/* Socials icons */}
                         <div className="mt-[1.5rem] flex items-center space-x-3">
@@ -45,7 +45,7 @@ function Footer() {
                         <p className="text-[15px] w-fit text-white/25 hover:text-yellow-300 cursor-pointer 
                         mb-[0.7rem]">Privacy</p>
                         <p className="text-[15px] w-fit text-white/25 hover:text-yellow-300 cursor-pointer 
-                        mb-[0.7rem]">policy</p>
+                        mb-[0.7rem]">Policy</p>
                         <p className="text-[15px] w-fit text-white/25 hover:text-yellow-300 cursor-pointer 
                         mb-[0.7rem]">Application</p>
                         <p className="text-[15px] w-fit text-white/25 hover:text-yellow-300 cursor-pointer 
@@ -74,7 +74,7 @@ function Footer() {
                         mb-[0.7rem]">Surat,Gujarat,India</p>
                     </div>
                 </div>
-                  <h1 className="mt-[2rem] text-[14px] w-[80%] mx-auto text-white/50">@COPYRIGHT BY P2 DEV -2025</h1>
+                  <h1 className="mt-[2rem] text-[14px] w-[80%] mx-auto text-white/50">&copy;COPYRIGHT BY P2 DEVELOPER -2025</h1>
             </div>
         </>
     );

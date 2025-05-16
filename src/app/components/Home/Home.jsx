@@ -11,7 +11,7 @@ async function Home() {
             <div>
                 <Hero/>
                 <JobCategory/>
-                <FeaturedJobs />
+                <FeaturedJobs session={session}/>
             </div>
         </>
     );

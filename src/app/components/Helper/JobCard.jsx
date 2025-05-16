@@ -34,7 +34,6 @@ function JobCard({ job, session }) {
 }, []);
 
 
-
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (menuRef.current && !menuRef.current.contains(event.target)) {
@@ -110,7 +109,6 @@ function JobCard({ job, session }) {
 
   return (
     <>
-     
       <div data-aos="zoom-in-up" className="p-4 mb-6 relative border-2 cursor-pointer hover:scale-110 hover:shadow-sm transition-all duration-300 border-gray-500/10 rounded-lg">
         <div className="flex items-center space-x-6">
           <div>
@@ -160,14 +158,14 @@ function JobCard({ job, session }) {
                   <FaRegBookmark /> Bookmark
                 </li>
                 {
-                  session?.user?.id ==job?.user?._id && (
+                   session?.user?.name ==job?.user?.name && session?.user?.role=='recruiter' && (
                     <li className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 cursor-pointer rounded-lg" onClick={handleIsClick}>
                       <FaEdit /> Edit
                     </li>
                   )
                 }
                 {
-                  session?.user?.id ==job?.user?._id && (
+                  session?.user?.name ==job?.user?.name && session?.user?.role=='recruiter'  && (
                     <li  onClick={() => handleDelete(job._id)} className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 cursor-pointer text-red-600 rounded-lg">
                       <MdDelete /> Delete
                       

@@ -24,6 +24,8 @@ export async function PUT(req, { params }) {
     const salary = formData.get("salary");
     const location = formData.get("location");
     const jobtype = formData.get("jobtype");
+    const description=formData.get("description");
+    const skillsArray = formData.getAll("skills");
     const image = formData.get("image");
 
     await connectToDatabase();
@@ -37,12 +39,14 @@ export async function PUT(req, { params }) {
     post.salary = salary || post.salary;
     post.location = location || post.location;
     post.jobtype = jobtype || post.jobtype;
+    post.description = description || post.description;
+    post.skills = skillsArray.length > 0 ? skillsArray : post.skills;
 
     if (image && typeof image === "object" && image.size > 0) {
 
       // Optional: handle image upload here
         const imageUrl = await uploadToCloudinary(image);
-      post.image = imageUrl; // placeholder; you can use Cloudinary etc.
+      post.image = imageUrl; 
     }
 
     await post.save();

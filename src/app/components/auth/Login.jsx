@@ -3,6 +3,8 @@ import { signIn } from "next-auth/react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -19,13 +21,17 @@ export default function Login() {
     });
 
     if (res.ok) {
+      toast.success(res?.data?.message || "Sign in Successfully!");
       router.push("/");
+      router.refresh();
     } else {
-      alert("Login failed");
+      toast.error("Login failed");
     }
   };
 
   return (
+    <>
+    <ToastContainer position="top-right" />
     <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded shadow">
       <h1 className="text-2xl font-bold mb-4 text-center">Sign In</h1>
       <form onSubmit={handleLogin}>
@@ -49,5 +55,6 @@ export default function Login() {
       </form>
       <p>Create an Account ?<span className="text-red-500"><Link href="/signup">Sign Up </Link></span></p>
     </div>
+    </>
   );
 }

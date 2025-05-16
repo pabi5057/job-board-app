@@ -5,6 +5,8 @@ const postSchema = new mongoose.Schema({
   image: String,
   salary:String,
   location:String,
+  description:String,
+  skills:[String],
   jobtype:String,
   user: {
     type: mongoose.Schema.Types.ObjectId,

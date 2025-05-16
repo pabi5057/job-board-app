@@ -38,6 +38,7 @@ export async function POST(req) {
     const salary = formData.get("salary");
     const location = formData.get("location");
     const jobtype = formData.get("jobtype");
+    const description=formData.get('description');
     const imageFile = formData.get("image");
 
     let imageUrl = "";
@@ -46,11 +47,15 @@ export async function POST(req) {
       imageUrl = await uploadToCloudinary(imageFile);
     }
 
+    const skills=formData.getAll('skills')
+
     const newPost = new Post({
       title,
       salary,
       location,
       jobtype,
+      description,
+      skills,
       image: imageUrl,
       user: userId,
     });

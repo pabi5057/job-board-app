@@ -1,3 +1,4 @@
+
 "use client";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
@@ -5,24 +6,28 @@ import { toast } from "react-toastify";
 
 export default function EditListingModal({ isOpen, onClose, job, onUpdate }) {
     const [form, setForm] = useState({
-        title:  "",
+        title: "",
         image: null,
         salary: "",
-        location:"",
-        jobtype:"",
+        location: "",
+        jobtype: "",
+        description: "",
+        skills: "",
     });
 
     const [touched, setTouched] = useState({});
-    const router=useRouter();
+    const router = useRouter();
 
     useEffect(() => {
         if (job) {
             setForm({
                 title: job?.title || "",
-                image:job?.image || null,
-                salary:job?.salary || "",
-                location:job?.location || "",
-                jobtype:job?.jobtype || "",
+                image: job?.image || null,
+                salary: job?.salary || "",
+                location: job?.location || "",
+                jobtype: job?.jobtype || "",
+                description: job?.description || "",
+                skills: job?.skills?.join(", ") || "",
             });
         }
     }, [job]);
@@ -40,13 +45,13 @@ export default function EditListingModal({ isOpen, onClose, job, onUpdate }) {
     const isValid = (name) => {
         const value = form[name];
         if (name === "image") return value === null || value instanceof File;
-        return typeof value === 'string' && value.trim().length > 0;
+        return typeof value === "string" && value.trim().length > 0;
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const allFieldsValid = ["title", "salary", "location", "jobtype"].every(isValid);
+        const allFieldsValid = ["title", "salary", "location", "jobtype", "description", "skills"].every(isValid);
         if (!allFieldsValid) {
             toast.error("Please fill out all fields correctly.");
             return;
@@ -54,7 +59,10 @@ export default function EditListingModal({ isOpen, onClose, job, onUpdate }) {
 
         const formData = new FormData();
         for (const key in form) {
-            if (form[key] !== null) {
+            if (key === "skills") {
+                const skillsArray = form.skills.split(",").map((skill) => skill.trim()).filter(Boolean);
+                skillsArray.forEach((skill) => formData.append("skills", skill));
+            } else if (form[key] !== null) {
                 formData.append(key, form[key]);
             }
         }
@@ -62,16 +70,13 @@ export default function EditListingModal({ isOpen, onClose, job, onUpdate }) {
         try {
             const res = await fetch(`/api/posts/${job._id}`, {
                 method: "PUT",
-                body:formData,
+                body: formData,
             });
 
             if (res.ok) {
                 toast.success("Updated Successfully!");
                 onClose();
                 router.refresh();
-                // setTimeout(() => {
-                //     router.push("/");
-                //   }, 1000)
             } else {
                 toast.error("Update failed!");
             }
@@ -105,7 +110,7 @@ export default function EditListingModal({ isOpen, onClose, job, onUpdate }) {
 
     return (
         <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center">
-            <div className="bg-white rounded-xl w-full max-w-lg p-6">
+            <div className="bg-white rounded-xl w-full max-w-lg max-h-[90vh] overflow-y-auto p-6">
                 <h2 className="text-xl font-bold mb-4">Edit Job Listing</h2>
                 <form onSubmit={handleSubmit} className="grid gap-5">
                     {renderField("Title", "title", "text", "e.g. Product Designer")}
@@ -113,6 +118,45 @@ export default function EditListingModal({ isOpen, onClose, job, onUpdate }) {
                     {renderField("Location", "location", "text", "e.g. Remote")}
                     {renderField("Job Type", "jobtype", "text", "e.g. Full-Time")}
 
+                    {/* Description */}
+                    <div>
+                        <label className={`block text-sm font-medium ${isValid("description") ? "text-green-700" : "text-gray-900"}`}>
+                            Description
+                        </label>
+                        <textarea
+                            name="description"
+                            id="description"
+                            value={form.description}
+                            onChange={handleChange}
+                            placeholder="Enter job description"
+                            rows={4}
+                            className={`w-full mt-1 p-2.5 text-sm rounded-lg border ${isValid("description")
+                                ? "bg-green-50 border-green-500 text-green-900 placeholder-green-700"
+                                : "bg-gray-50 border-gray-300 text-gray-900 placeholder-gray-400"
+                                }`}
+                        />
+                    </div>
+
+                    {/* Skills */}
+                    <div>
+                        <label className={`block text-sm font-medium ${isValid("skills") ? "text-green-700" : "text-gray-900"}`}>
+                            Skills (comma-separated)
+                        </label>
+                        <input
+                            type="text"
+                            name="skills"
+                            id="skills"
+                            value={form.skills}
+                            onChange={handleChange}
+                            placeholder="e.g. React, Node.js, MongoDB"
+                            className={`w-full mt-1 p-2.5 text-sm rounded-lg border ${isValid("skills")
+                                ? "bg-green-50 border-green-500 text-green-900 placeholder-green-700"
+                                : "bg-gray-50 border-gray-300 text-gray-900 placeholder-gray-400"
+                                }`}
+                        />
+                    </div>
+
+                    {/* File Upload */}
                     <div>
                         <label className={`block text-sm font-medium ${isValid("image") ? "text-green-700" : "text-gray-900"}`}>
                             Upload New File (optional)
