@@ -6,6 +6,7 @@ import HeroImg from '/public/images/hero.svg'
 import Image from 'next/image';
 import Link from 'next/link';
 import Typed from "react-typed";
+import { Typewriter } from 'react-simple-typewriter';
 
 
 function Hero() {
@@ -44,7 +45,7 @@ function Hero() {
             );
             setFilteredJobs(results);
         }, 300),
-        [jobs] 
+        [jobs]
     );
 
     const onHandleChange = (e) => {
@@ -57,16 +58,27 @@ function Hero() {
         <div className="pt-[5rem] pb-[3rem]">
             <div className="w-[100%] h-[60vh] flex flex-col items-center justify-center">
                 <div className="w-[80%] mx-auto grid grid-cols-1 lg:grid-cols-2 items-center gap-[2rem]">
-                    
+
                     <div>
-                        <h1 className='text-[28px] sm:text-[35px] lg:text-[45px] xl:text-[60px] text-[#05264e] leading-[3rem] lg:leading-[4rem] font-extrabold'>
-                            The <span className='text-blue-500'>Easiest Way</span><br /> To Get Your New job
+                        <h1 className='text-[28px] sm:text-[35px] lg:text-[45px] 2xl:text-[70px] text-[#05264e] leading-[3rem] lg:leading-[3.8rem] 2xl:leading-[5rem] font-extrabold '>
+                            The <span className='text-blue-500'>
+                                <Typewriter
+                                    words={['Easiest Way', 'Smartest Way', 'Fastest Way']}
+                                    loop={true}
+                                    cursor
+                                    cursorStyle='|'
+                                    typeSpeed={70}
+                                    deleteSpeed={50}
+                                    delaySpeed={1000}
+                                />
+                            </span>
+                            <br />To Get Your New Job
                         </h1>
                         <p className='text-[#4f5e64] text-[16px] md:text-[18px] mt-[1rem]'>
                             Each month, more than 3 million job seekers turn to website on their search
                             for work, making over 140,000 applications every single day
                         </p>
-                        
+
                         <div className='mt-[1.5rem]'>
                             <input
                                 type="text"
@@ -78,7 +90,7 @@ function Hero() {
                             />
                             <button className='px-5 py-4 outline-none rounded-r-md bg-blue-500 text-white'>Search</button>
                         </div>
-                        
+
                         {searchTerm && (
                             <div className="bg-white mt-4 p-4 rounded-md shadow-md w-[60%] md:w-[65%] lg:w-[75%]">
                                 {filteredJobs.length > 0 ? (
@@ -96,7 +108,7 @@ function Hero() {
                             </div>
                         )}
                     </div>
-                    
+
                     <div className='hidden lg:block'>
                         <Image src={HeroImg} alt='hero' width={700} height={400} />
                     </div>
