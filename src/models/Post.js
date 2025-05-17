@@ -13,6 +13,7 @@ const postSchema = new mongoose.Schema({
     ref: "User",
     required: true,
   },
+  jobcategory:String,
 });
 
 export default mongoose.models?.Post || mongoose.model("Post", postSchema);

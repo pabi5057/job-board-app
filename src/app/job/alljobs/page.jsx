@@ -1,7 +1,6 @@
 "use client";
 
-import Link from "next/link";
-import JobData from "../../../../data";
+
 import JobCard from "@/app/components/Helper/JobCard";
 import { useEffect, useState } from "react";
 

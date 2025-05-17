@@ -1,12 +1,22 @@
-
 "use client";
+
 import { useRouter } from 'next/navigation';
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Select from 'react-select';
+import debounce from 'lodash.debounce';
+import AsyncSelect from 'react-select/async';
 
 export default function NewListingPage() {
     const router = useRouter();
+
+    const [hasMounted, setHasMounted] = useState(false);
+
+    // Fix hydration mismatch: ensure client-only rendering
+    useEffect(() => {
+        setHasMounted(true);
+    }, []);
 
     const [form, setForm] = useState({
         title: "",
@@ -16,6 +26,7 @@ export default function NewListingPage() {
         jobtype: "",
         description: "",
         skills: [],
+        jobcategory: "",
     });
 
     const [touched, setTouched] = useState({});
@@ -82,37 +93,32 @@ export default function NewListingPage() {
             jobtype: "",
             description: "",
             skills: [],
+            jobcategory: "",
         });
         setTouched({});
     };
 
-    const renderField = (label, name, type = "text", placeholder = "") => (
-        <div>
-            <label
-                htmlFor={name}
-                className={`block text-sm font-medium ${isValid(name) ? "text-green-700 dark:text-green-500" : "text-gray-900 dark:text-white"}`}
-            >
-                {label}
-            </label>
-            <input
-                type={type}
-                name={name}
-                id={name}
-                value={type !== "file" ? form[name] : undefined}
-                onChange={handleChange}
-                placeholder={placeholder}
-                className={`w-full mt-1 p-2.5 text-sm rounded-lg border ${isValid(name)
-                    ? "bg-green-50 border-green-500 text-green-900 placeholder-green-700 focus:ring-green-500 focus:border-green-500"
-                    : "bg-gray-50 border-gray-300 text-gray-900 placeholder-gray-400 focus:ring-blue-500 focus:border-blue-500"
-                    }`}
-            />
-            {touched[name] && isValid(name) && (
-                <p className="mt-1 text-sm text-green-600 dark:text-green-500">
-                    ✅ <span className="font-medium">Alright!</span> Looks good!
-                </p>
-            )}
-        </div>
-    );
+    const handleCategoryChange = (selectedOption) => {
+        setForm((prev) => ({
+            ...prev,
+            jobcategory: selectedOption ? selectedOption.value : '',
+        }));
+        setTouched((prev) => ({ ...prev, jobcategory: true }));
+    };
+
+    const debouncedLoadOptions = debounce((inputValue, callback) => {
+        const categories = [
+            "Development", "Marketing", "Customer Service", "Design", "Project Management", "Finance", "Human resource","Health and Care","Automative Jobs"
+        ];
+
+        const filtered = categories
+            .filter((cat) => cat.toLowerCase().includes(inputValue.toLowerCase()))
+            .map((cat) => ({ label: cat, value: cat }));
+
+        callback(filtered);
+    }, 300);
+
+    if (!hasMounted) return null; // Prevent hydration error
 
     return (
         <>
@@ -121,17 +127,41 @@ export default function NewListingPage() {
             <p className='text-lg font-bold text-black/60 mb-6 mt-2 text-center'>
                 Get your job posting seen by thousands of job seekers.
             </p>
-            <div className="px-4 py-10 mb-4 max-w-xl mx-auto border-1 border-gray-300 rounded-lg shadow-2xs bg-white dark:bg-gray-800">
+
+            <div className="px-4 py-10 mb-4 max-w-xl mx-auto border rounded-lg shadow bg-white dark:bg-gray-800">
                 <p className='text-lg font-bold mt-1'>Job details</p>
                 <p className='text-md text-black/60 mb-6 mt-1'>Provide a job description and details</p>
 
                 <form onSubmit={handleSubmit} className="grid gap-5">
+                    {/* Form Fields */}
                     {renderField("Title", "title", "text", "e.g. Product Designer")}
                     {renderField("Salary", "salary", "text", "e.g. 50k or 50,000/month")}
                     {renderField("Location", "location", "text", "e.g. New York")}
                     {renderField("Job Type", "jobtype", "text", "e.g. Full-Time")}
 
-                    {/* Job Description */}
+                    {/* Job Category Dropdown */}
+                    <div>
+                        <label className="block text-sm font-medium text-gray-900 dark:text-white mb-1">
+                            Job Category
+                        </label>
+                        <AsyncSelect
+                            cacheOptions
+                            loadOptions={debouncedLoadOptions}
+                            defaultOptions
+                            onChange={handleCategoryChange}
+                            value={form.jobcategory ? { label: form.jobcategory, value: form.jobcategory } : null}
+                            placeholder="Select a category"
+                            required
+                            isClearable
+                        />
+                        {touched.jobcategory && isValid("jobcategory") && (
+                            <p className="mt-1 text-sm text-green-600 dark:text-green-500">
+                                ✅ <span className="font-medium">Alright!</span> Category selected!
+                            </p>
+                        )}
+                    </div>
+
+                    {/* Description */}
                     <div>
                         <label htmlFor="description" className="block text-sm font-medium text-gray-900 dark:text-white">
                             Job Description
@@ -142,6 +172,7 @@ export default function NewListingPage() {
                             rows="4"
                             value={form.description}
                             onChange={handleChange}
+                            required
                             placeholder="Write about the job role and responsibilities..."
                             className="w-full mt-1 p-2.5 text-sm rounded-lg border bg-gray-50 border-gray-300 text-gray-900 placeholder-gray-400 focus:ring-blue-500 focus:border-blue-500"
                         />
@@ -152,13 +183,14 @@ export default function NewListingPage() {
                         )}
                     </div>
 
-                    {/* Skills Checkbox Group */}
+                    {/* Skills */}
                     <div>
                         <label className="block text-sm font-medium text-gray-900 dark:text-white mb-1">
                             Required Skills
                         </label>
                         <div className="flex flex-wrap gap-4">
-                            {["JavaScript", "React", "Node.js", "Python", "CSS"].map((skill) => (
+                            {["JavaScript", "React", "Node.js", "Python", "CSS","CommunicationSkills","Accounting","Pharmacist",
+                            "UIUX","Figma","Diagnostics","Repair","C","SEO","SEM","ContentCreator","Payroll","Onboarding"].map((skill) => (
                                 <label key={skill} className="flex items-center space-x-2">
                                     <input
                                         type="checkbox"
@@ -190,6 +222,7 @@ export default function NewListingPage() {
                             id="image"
                             accept="image/*"
                             onChange={handleChange}
+                            required
                             className={`block w-full mt-1 text-sm rounded-lg border ${isValid("image")
                                 ? "bg-green-50 border-green-500 text-green-900 file:text-green-700 focus:outline-green-500"
                                 : "bg-gray-50 border-gray-300 text-gray-900 file:text-gray-500"
@@ -205,6 +238,7 @@ export default function NewListingPage() {
                         )}
                     </div>
 
+                    {/* Submit Button */}
                     <button
                         type="submit"
                         className="w-full bg-blue-600 text-white font-medium py-2.5 rounded-lg hover:bg-blue-700 transition"
@@ -215,4 +249,37 @@ export default function NewListingPage() {
             </div>
         </>
     );
+
+    // Reusable Input Renderer
+    function renderField(label, name, type = "text", placeholder = "") {
+        return (
+            <div>
+                <label
+                    htmlFor={name}
+                    className={`block text-sm font-medium ${isValid(name) ? "text-green-700 dark:text-green-500" : "text-gray-900 dark:text-white"}`}
+                >
+                    {label}
+                </label>
+                <input
+                    type={type}
+                    name={name}
+                    id={name}
+                    value={type !== "file" ? form[name] : undefined}
+                    onChange={handleChange}
+                    placeholder={placeholder}
+                    required
+                    className={`w-full mt-1 p-2.5 text-sm rounded-lg border ${isValid(name)
+                        ? "bg-green-50 border-green-500 text-green-900 placeholder-green-700 focus:ring-green-500 focus:border-green-500"
+                        : "bg-gray-50 border-gray-300 text-gray-900 placeholder-gray-400 focus:ring-blue-500 focus:border-blue-500"
+                        }`}
+                />
+                {touched[name] && isValid(name) && (
+                    <p className="mt-1 text-sm text-green-600 dark:text-green-500">
+                        ✅ <span className="font-medium">Alright!</span> Looks good!
+                    </p>
+                )}
+            </div>
+        );
+    }
 }
+

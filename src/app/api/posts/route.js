@@ -40,6 +40,7 @@ export async function POST(req) {
     const jobtype = formData.get("jobtype");
     const description=formData.get('description');
     const imageFile = formData.get("image");
+    const jobcategory=formData.get("jobcategory");
 
     let imageUrl = "";
 
@@ -56,6 +57,7 @@ export async function POST(req) {
       jobtype,
       description,
       skills,
+      jobcategory,
       image: imageUrl,
       user: userId,
     });
