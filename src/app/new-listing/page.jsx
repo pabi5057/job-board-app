@@ -118,7 +118,7 @@ export default function NewListingPage() {
         callback(filtered);
     }, 300);
 
-    if (!hasMounted) return null; // Prevent hydration error
+    if (!hasMounted) return null; 
 
     return (
         <>
