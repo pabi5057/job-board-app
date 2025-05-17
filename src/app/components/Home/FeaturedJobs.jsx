@@ -11,8 +11,7 @@ function FeaturedJobs({ session }) {
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchJobs = async () => {
+      const fetchJobs = async () => {
       const res = await fetch("/api/posts");
       const data = await res.json();
       if (data.success) {
@@ -24,6 +23,7 @@ function FeaturedJobs({ session }) {
       }
     };
 
+  useEffect(() => {
     fetchJobs();
   }, []);
 
@@ -41,7 +41,7 @@ function FeaturedJobs({ session }) {
               <>
                 {jobs?.map((job) => (
                   <div key={job?._id}>
-                    <JobCard job={job} session={session} />
+                    <JobCard job={job} session={session} fetchJobs={fetchJobs}/>
                   </div>
                 ))}
               </>

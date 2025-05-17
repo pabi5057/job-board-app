@@ -16,8 +16,10 @@ import { useRouter } from "next/navigation";
 import EditListingModal from "./EditListingModal";
 import "aos/dist/aos.css";
 import Aos from "aos";
-function JobCard({ job, session }) {
+import DeleteModal from "./DeleteModal";
+function JobCard({ job, session,fetchJobs }) {
 
+  const [deleteModalOpen,setDeleteModalOpen]=useState(false);
   const [open, setOpen] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [bookmarkedJobs, setBookmarkedJobs] = useState([]);
@@ -47,37 +49,6 @@ function JobCard({ job, session }) {
   }, []);
 
   
-  const handleDelete = async (jobId) => {
-    try {
-      const res = await fetch('/api/posts', {
-        method: "DELETE",
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ id: jobId }),
-      });
-  
-      const data = await res.json(); 
-  
-      if (res.ok) {
-        toast.dismiss(); 
-        toast.success(data.message || "Job deleted successfully", {
-          toastId: "job-delete-success"
-        });
-        setTimeout(() => {
-          router.push("/");
-        }, 1000)
-      } else {
-        toast.error(data.message || "Failed to delete job");
-      }
-    } catch (error) {
-      console.error("Delete error:", error);
-      toast.error("Something went wrong!");
-    }
-  };
-
-  
-
   const handleIsClick=()=>{
     setIsOpen(true);
     setOpen(false);
@@ -86,7 +57,14 @@ function JobCard({ job, session }) {
   const handleClose=()=>{
     setIsOpen(false);
   }
+
+  const  handleDeleteClick=()=>{
+     setDeleteModalOpen(true);
+  }
   
+  const handleDeleteClose=()=>{
+    setDeleteModalOpen(false);
+  }
   
   const toggleBookmark = (jobId) => {
     let updatedBookmarks;
@@ -166,7 +144,7 @@ function JobCard({ job, session }) {
                 }
                 {
                   session?.user?.name ==job?.user?.name && session?.user?.role=='recruiter'  && (
-                    <li  onClick={() => handleDelete(job._id)} className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 cursor-pointer text-red-600 rounded-lg">
+                    <li  onClick={handleDeleteClick} className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 cursor-pointer text-red-600 rounded-lg">
                       <MdDelete /> Delete
                       
                     </li>
@@ -190,6 +168,9 @@ function JobCard({ job, session }) {
           job={job}
         />
       )}
+      {
+        <DeleteModal open={deleteModalOpen} onClose={handleDeleteClose} id={job._id} fetchJobs={fetchJobs}/>
+      }
     </>
   );
 }
